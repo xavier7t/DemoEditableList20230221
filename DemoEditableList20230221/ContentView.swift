@@ -8,14 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var array: [String] = [
+        "🟥",
+        "🟧",
+        "🟨",
+        "🟩",
+        "🟦",
+        "🟪"
+    ]
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(array, id: \.self) { item in
+                    Text(item)
+                }
+                .onDelete { index in
+                    array.remove(atOffsets: index)
+                }
+                .onMove { from, to in
+                    array.move(fromOffsets: from, toOffset: to)
+                }
+            }
+            .navigationTitle("Editable List")
+            .toolbar {
+                EditButton()
+            }
         }
-        .padding()
     }
 }
 
